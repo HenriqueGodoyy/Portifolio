@@ -9,7 +9,8 @@ import {
   type MotionValue,
 } from "motion/react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { projects, type Category, type Project } from "@/content/projects";
+import Link from "next/link";
+import { palette, projects, type Project } from "@/content/projects";
 import { dict, useLocale } from "@/lib/i18n";
 
 // O anel precisa de cards suficientes para fechar o círculo: repete a lista.
@@ -20,12 +21,6 @@ const items: Project[] = Array.from(
 );
 const STEP = 360 / items.length;
 const DEG_PER_SECOND = 4;
-
-const palette: Record<Category, { bg: string; fg: string; chip: string }> = {
-  web: { bg: "#2f5bea", fg: "#ffffff", chip: "rgb(255 255 255 / 0.18)" },
-  security: { bg: "#e5484d", fg: "#ffffff", chip: "rgb(255 255 255 / 0.18)" },
-  study: { bg: "#f3c63f", fg: "#16181d", chip: "rgb(22 24 29 / 0.12)" },
-};
 
 type Geometry = { radius: number; perspective: number; back: number; cardW: number; cardH: number };
 
@@ -189,19 +184,17 @@ function Card({
         marginLeft: -geo.cardW / 2,
         marginTop: -geo.cardH / 2,
         transform,
+        opacity,
+        pointerEvents,
         backfaceVisibility: "hidden",
         fontSize: geo.cardW / 16,
       }}
     >
-      <motion.a
-        href={project.live ?? project.repo}
-        target="_blank"
-        rel="noreferrer"
+      <Link
+        href={`/projetos/${project.slug}`}
         draggable={false}
         className="flex h-full w-full flex-col justify-between overflow-hidden rounded-[1.4em] p-[1.3em] shadow-[0_1.5em_3em_rgb(0_0_0/0.35)] transition-[filter] hover:brightness-110"
         style={{
-          opacity,
-          pointerEvents,
           color: colors.fg,
           background: project.image
             ? `linear-gradient(rgb(0 0 0 / 0.1), rgb(0 0 0 / 0.75)), url(${project.image}) center / cover`
@@ -218,7 +211,7 @@ function Card({
           <h3 className="font-display text-[2.7em] leading-[0.95]">{project.name}</h3>
           <p className="mt-[0.7em] text-[0.95em] leading-snug opacity-85">{description}</p>
         </div>
-      </motion.a>
+      </Link>
     </motion.div>
   );
 }

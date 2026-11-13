@@ -57,6 +57,11 @@ export const dict = {
     },
     live: "ao vivo",
     code: "código",
+    back: "Todos os projetos",
+    openLive: "Ver no ar",
+    openCode: "Ver o código",
+    previous: "Anterior",
+    next: "Próximo",
     contactTitle: "Vamos conversar",
     contactBody:
       "Estudante de Engenharia de Software na UNAERP. O jeito mais rápido de me achar é pelo GitHub.",
@@ -84,6 +89,11 @@ export const dict = {
     },
     live: "live",
     code: "code",
+    back: "All projects",
+    openLive: "View live",
+    openCode: "View the code",
+    previous: "Previous",
+    next: "Next",
     contactTitle: "Let's talk",
     contactBody:
       "Software Engineering student at UNAERP. The quickest way to reach me is GitHub.",

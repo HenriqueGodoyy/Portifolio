@@ -1,8 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { Ring } from "@/components/Ring";
+import { SiteHeader } from "@/components/SiteHeader";
 import { githubProfile, projects, stats, type Category } from "@/content/projects";
-import { dict, setLocale, useLocale } from "@/lib/i18n";
+import { dict, useLocale } from "@/lib/i18n";
 
 const categories: Category[] = ["web", "security", "study"];
 
@@ -44,42 +46,7 @@ export function Home() {
   return (
     <>
       <div className="flex h-dvh min-h-[560px] flex-col gap-4 p-4 sm:gap-5 sm:p-6">
-        <header className="flex items-baseline justify-between gap-4 font-display text-2xl leading-none sm:text-3xl">
-          <div className="flex items-baseline gap-2">
-            <a href="#top" className="text-[1.25em]">
-              Henrique Godoy.
-            </a>
-            <nav className="hidden items-baseline gap-2 text-muted sm:flex">
-              {categories.map((c) => (
-                <span key={c} className="flex gap-2">
-                  <span aria-hidden>/</span>
-                  <a href={`#${c}`} className="transition-colors hover:text-ink">
-                    {t.nav[c]}
-                  </a>
-                </span>
-              ))}
-            </nav>
-          </div>
-          <div className="flex items-baseline gap-2">
-            {(["pt", "en"] as const).map((l, i) => (
-              <span key={l} className="flex gap-2">
-                {i > 0 && (
-                  <span aria-hidden className="text-muted">
-                    /
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={() => setLocale(l)}
-                  aria-pressed={locale === l}
-                  className={`cursor-pointer transition-colors hover:text-ink ${locale === l ? "text-ink" : "text-muted"}`}
-                >
-                  {l.toUpperCase()}
-                </button>
-              </span>
-            ))}
-          </div>
-        </header>
+        <SiteHeader />
 
         <main id="top" className="min-h-0 flex-1">
           <Ring />
@@ -141,7 +108,14 @@ export function Home() {
                     key={p.slug}
                     className="grid grid-cols-1 gap-x-6 gap-y-1 border-t border-line py-5 sm:grid-cols-[1fr_1.4fr_auto] sm:items-baseline"
                   >
-                    <h3 className="font-display text-2xl sm:text-3xl">{p.name}</h3>
+                    <h3 className="font-display text-2xl sm:text-3xl">
+                      <Link
+                        href={`/projetos/${p.slug}`}
+                        className="transition-opacity hover:opacity-60"
+                      >
+                        {p.name}
+                      </Link>
+                    </h3>
                     <p className="text-[15px] leading-relaxed text-ink/75">
                       {p.description[locale]}
                       <span className="ml-2 font-mono text-[11px] tracking-wider text-muted uppercase">
