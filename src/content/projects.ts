@@ -46,8 +46,8 @@ export const projects: Project[] = [
     tech: "Kotlin",
     stack: ["Kotlin", "Android", "Gradle"],
     description: {
-      pt: "Segurança em aplicativos mobile com Kotlin.",
-      en: "Mobile application security with Kotlin.",
+      pt: "App Android de sobremesas com catálogo via API e regras de segurança de rede.",
+      en: "Android dessert app with an API catalog and network security rules.",
     },
     repo: gh("mobile-security"),
   },
@@ -118,5 +118,3 @@ export const stats = {
   languages: 5,
   since: 2025,
 };
-
-export const githubProfile = "https://github.com/HenriqueGodoyy";

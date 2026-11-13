@@ -27,8 +27,12 @@ export function SiteHeader() {
           ))}
         </nav>
       </div>
-      <div className="flex items-baseline gap-2">
-        {(["pt", "en"] as const).map((l, i) => (
+      <div className="flex items-baseline gap-4 sm:gap-6">
+        <Link href="/sobre" className="text-muted transition-colors hover:text-ink">
+          {t.nav.about}
+        </Link>
+        <div className="flex items-baseline gap-2">
+          {(["pt", "en"] as const).map((l, i) => (
           <span key={l} className="flex gap-2">
             {i > 0 && (
               <span aria-hidden className="text-muted">
@@ -44,7 +48,8 @@ export function SiteHeader() {
               {l.toUpperCase()}
             </button>
           </span>
-        ))}
+          ))}
+        </div>
       </div>
     </header>
   );

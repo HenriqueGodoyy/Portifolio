@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { ContactLinks } from "@/components/ContactLinks";
 import { Ring } from "@/components/Ring";
 import { SiteHeader } from "@/components/SiteHeader";
-import { githubProfile, projects, stats, type Category } from "@/content/projects";
+import { projects, stats, type Category } from "@/content/projects";
 import { dict, useLocale } from "@/lib/i18n";
 
 const categories: Category[] = ["web", "security", "study"];
@@ -151,14 +152,13 @@ export function Home() {
         <section id="contact" className="scroll-mt-8 border-t border-line pt-8">
           <h2 className="font-display text-4xl sm:text-5xl">{t.contactTitle}</h2>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink/75">{t.contactBody}</p>
-          <a
-            href={githubProfile}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-6 inline-block rounded-full bg-ink px-6 py-3 font-mono text-xs tracking-[0.16em] text-paper uppercase transition-opacity hover:opacity-80"
+          <ContactLinks />
+          <Link
+            href="/sobre"
+            className="mt-8 inline-block rounded-full bg-ink px-6 py-3 font-mono text-xs tracking-[0.16em] text-paper uppercase transition-opacity hover:opacity-80"
           >
-            {t.contactCta} ↗
-          </a>
+            {t.contactCta} →
+          </Link>
         </section>
       </div>
     </>

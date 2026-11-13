@@ -36,7 +36,7 @@ export function useLocale(): Locale {
 
 export const dict = {
   pt: {
-    nav: { web: "Web", security: "Segurança", study: "Estudos" },
+    nav: { web: "Web", security: "Segurança", study: "Estudos", about: "Sobre" },
     pitch: {
       a: "Eu construo ",
       web: "aplicações web",
@@ -64,11 +64,11 @@ export const dict = {
     next: "Próximo",
     contactTitle: "Vamos conversar",
     contactBody:
-      "Estudante de Engenharia de Software na UNAERP. O jeito mais rápido de me achar é pelo GitHub.",
-    contactCta: "Abrir meu GitHub",
+      "Estudante de Engenharia de Software na UNAERP. Me chame por qualquer um destes canais.",
+    contactCta: "Mais sobre mim",
   },
   en: {
-    nav: { web: "Web", security: "Security", study: "Learning" },
+    nav: { web: "Web", security: "Security", study: "Learning", about: "About" },
     pitch: {
       a: "I build ",
       web: "web apps",
@@ -96,7 +96,7 @@ export const dict = {
     next: "Next",
     contactTitle: "Let's talk",
     contactBody:
-      "Software Engineering student at UNAERP. The quickest way to reach me is GitHub.",
-    contactCta: "Open my GitHub",
+      "Software Engineering student at UNAERP. Reach me through any of these.",
+    contactCta: "More about me",
   },
 } as const;
