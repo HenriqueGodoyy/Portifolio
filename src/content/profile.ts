@@ -1,4 +1,4 @@
-// Dados pessoais usados na página Sobre e no contato da home.
+// Dados pessoais usados na página Sobre, na home e no rodapé.
 
 export const contacts = [
   {
@@ -23,16 +23,80 @@ export const contacts = [
   },
 ] as const;
 
-export const stack = [
-  "JavaScript",
-  "TypeScript",
-  "HTML5",
-  "CSS3",
-  "Python",
-  "Node.js",
-  "C",
-  "SQL",
-  "MongoDB",
+export const githubUser = "HenriqueGodoyy";
+export const siteRepo = "https://github.com/HenriqueGodoyy/Portifolio";
+
+/**
+ * Currículo em PDF. Coloque o arquivo em public/ (ex.: public/curriculo.pdf) e
+ * troque `null` por "/curriculo.pdf" para o botão de download aparecer.
+ */
+export const resumeUrl: string | null = null;
+
+export const skills = [
+  { pt: "Front-end", en: "Front end", items: ["HTML5", "CSS3", "JavaScript", "TypeScript", "React"] },
+  { pt: "Back-end", en: "Back end", items: ["Node.js", "Python", "REST APIs"] },
+  { pt: "Dados", en: "Data", items: ["SQL", "MongoDB", "Supabase"] },
+  { pt: "Também uso", en: "Also using", items: ["C", "Kotlin", "Git"] },
+];
+
+export const stack = skills.flatMap((group) => group.items);
+
+type Localized = { pt: string; en: string };
+
+/**
+ * Trajetória, da mais recente para a mais antiga. `period` e `place` são
+ * opcionais: preencha com as datas e a empresa do seu LinkedIn
+ * (ex.: period: { pt: "2025 — hoje", en: "2025 — present" }).
+ */
+export const journey: {
+  role: Localized;
+  place?: Localized;
+  period?: Localized;
+  description: Localized;
+  tags: string[];
+}[] = [
+  {
+    role: { pt: "Estagiário em Desenvolvimento de Software", en: "Software Development Intern" },
+    description: {
+      pt: "Desenvolvimento e automação no dia a dia de uma equipe de software, com APIs REST e banco de dados. Versões didáticas do que construí estão no repositório Estágio.",
+      en: "Day-to-day development and automation on a software team, with REST APIs and databases. Teaching versions of what I built live in the Estágio repository.",
+    },
+    tags: ["Python", "Node.js", "Playwright", "REST APIs"],
+  },
+  {
+    role: { pt: "Desenvolvedor, projeto de extensão", en: "Developer, extension project" },
+    place: { pt: "Unaerp Esportes", en: "Unaerp Esportes" },
+    description: {
+      pt: "Construo o sistema que acompanha a evolução dos atletas de natação da universidade: cadastro, métricas de desempenho e painel para treinadores.",
+      en: "I build the system that tracks the progress of the university's swimming athletes: registration, performance metrics and a panel for coaches.",
+    },
+    tags: ["React", "TypeScript", "Supabase"],
+  },
+  {
+    role: { pt: "Engenharia de Software", en: "Software Engineering" },
+    place: { pt: "UNAERP", en: "UNAERP" },
+    description: {
+      pt: "Graduação em andamento.",
+      en: "Bachelor's degree in progress.",
+    },
+    tags: [],
+  },
+];
+
+/** O que estou fazendo agora. Atualize quando mudar. */
+export const now: Localized[] = [
+  {
+    pt: "Finalizando o dashboard web do Unaerp Esportes",
+    en: "Finishing the Unaerp Esportes web dashboard",
+  },
+  {
+    pt: "Estudando segurança em aplicativos Android com Kotlin",
+    en: "Studying Android app security with Kotlin",
+  },
+  {
+    pt: "Evoluindo este portfólio com Next.js",
+    en: "Growing this portfolio with Next.js",
+  },
 ];
 
 export const about = {
@@ -49,9 +113,15 @@ export const about = {
       ["Foco", "Web, front-end e back-end"],
       ["Estudando", "Segurança de aplicações"],
     ],
+    journeyTitle: "Trajetória",
+    nowTitle: "Agora",
+    githubTitle: "Atividade no GitHub",
+    githubUpdated: "Atualizado em",
+    githubAll: "Ver todos os repositórios",
     stackTitle: "Linguagens e tecnologias",
     contactTitle: "Contato",
     projectsCta: "Ver os projetos",
+    resume: "Baixar currículo",
   },
   en: {
     title: "About",
@@ -66,8 +136,14 @@ export const about = {
       ["Focus", "Web, front end and back end"],
       ["Studying", "Application security"],
     ],
+    journeyTitle: "Journey",
+    nowTitle: "Now",
+    githubTitle: "GitHub activity",
+    githubUpdated: "Updated",
+    githubAll: "See all repositories",
     stackTitle: "Languages and technologies",
     contactTitle: "Contact",
     projectsCta: "See the projects",
+    resume: "Download résumé",
   },
 } as const;
