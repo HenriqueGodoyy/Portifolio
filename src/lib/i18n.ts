@@ -36,7 +36,7 @@ export function useLocale(): Locale {
 
 export const dict = {
   pt: {
-    nav: { web: "Web", security: "Segurança", study: "Estudos" },
+    nav: { web: "Web", security: "Segurança", study: "Estudos", about: "Sobre" },
     pitch: {
       a: "Eu construo ",
       web: "aplicações web",
@@ -48,7 +48,7 @@ export const dict = {
       contact: "fale comigo",
       e: ".",
     },
-    stats: { repositories: "Repositórios", languages: "Linguagens", since: "No GitHub desde" },
+    stats: { projects: "Projetos", technologies: "Tecnologias", live: "No ar" },
     hint: "Arraste para girar",
     sections: {
       web: "Aplicações web",
@@ -57,13 +57,18 @@ export const dict = {
     },
     live: "ao vivo",
     code: "código",
+    back: "Todos os projetos",
+    openLive: "Ver no ar",
+    openCode: "Ver o código",
+    previous: "Anterior",
+    next: "Próximo",
     contactTitle: "Vamos conversar",
     contactBody:
-      "Estudante de Engenharia de Software na UNAERP. O jeito mais rápido de me achar é pelo GitHub.",
-    contactCta: "Abrir meu GitHub",
+      "Estudante de Engenharia de Software na UNAERP. Me chame por qualquer um destes canais.",
+    contactCta: "Mais sobre mim",
   },
   en: {
-    nav: { web: "Web", security: "Security", study: "Learning" },
+    nav: { web: "Web", security: "Security", study: "Learning", about: "About" },
     pitch: {
       a: "I build ",
       web: "web apps",
@@ -75,7 +80,7 @@ export const dict = {
       contact: "say hi",
       e: ".",
     },
-    stats: { repositories: "Repositories", languages: "Languages", since: "On GitHub since" },
+    stats: { projects: "Projects", technologies: "Technologies", live: "Live" },
     hint: "Drag to spin",
     sections: {
       web: "Web apps",
@@ -84,9 +89,14 @@ export const dict = {
     },
     live: "live",
     code: "code",
+    back: "All projects",
+    openLive: "View live",
+    openCode: "View the code",
+    previous: "Previous",
+    next: "Next",
     contactTitle: "Let's talk",
     contactBody:
-      "Software Engineering student at UNAERP. The quickest way to reach me is GitHub.",
-    contactCta: "Open my GitHub",
+      "Software Engineering student at UNAERP. Reach me through any of these.",
+    contactCta: "More about me",
   },
 } as const;

@@ -18,10 +18,22 @@ const display = Instrument_Serif({
   weight: "400",
 });
 
+const title = "Henrique Godoy | Desenvolvedor web e segurança";
+const description =
+  "Portfólio de Henrique Godoy: aplicações web, segurança e estudos de Engenharia de Software.";
+
+// Na Vercel o endereço de produção vem do ambiente; os links da imagem de
+// compartilhamento precisam dele para serem absolutos.
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Henrique Godoy | Desenvolvedor web e segurança",
-  description:
-    "Portfólio de Henrique Godoy: aplicações web, segurança e estudos de Engenharia de Software.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  openGraph: { title, description, type: "website", locale: "pt_BR", siteName: "Henrique Godoy" },
+  twitter: { card: "summary_large_image", title, description },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

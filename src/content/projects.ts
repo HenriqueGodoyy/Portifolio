@@ -4,26 +4,40 @@ export type Project = {
   slug: string;
   name: string;
   category: Category;
+  /** Rótulo curto mostrado no card. */
   tech: string;
+  /** Tecnologias listadas na página do projeto. */
+  stack: string[];
   description: { pt: string; en: string };
   repo: string;
   live?: string;
+  /** Rascunho: fica fora do site até ter conteúdo. */
+  draft?: boolean;
   /** Caminho de um screenshot em /public (ex.: "/projects/natacao.png"). Opcional. */
   image?: string;
 };
 
 const gh = (repo: string) => `https://github.com/HenriqueGodoyy/${repo}`;
 
-// Para postar um projeto novo: adicione um item nesta lista.
-export const projects: Project[] = [
+export const palette: Record<Category, { bg: string; fg: string; chip: string }> = {
+  web: { bg: "#2f5bea", fg: "#ffffff", chip: "rgb(255 255 255 / 0.18)" },
+  security: { bg: "#e5484d", fg: "#ffffff", chip: "rgb(255 255 255 / 0.18)" },
+  study: { bg: "#f3c63f", fg: "#16181d", chip: "rgb(22 24 29 / 0.12)" },
+};
+
+// Para postar um projeto novo: adicione um item nesta lista e crie os arquivos
+// src/content/projects/<slug>.pt.mdx e <slug>.en.mdx com o texto da página.
+// Projetos com `draft: true` ficam guardados aqui, mas não aparecem no site.
+const allProjects: Project[] = [
   {
     slug: "natacao-unaerp",
     name: "Natação UNAERP",
     category: "web",
     tech: "TypeScript",
+    stack: ["React", "TypeScript", "Node.js", "Supabase", "REST API"],
     description: {
-      pt: "Projeto de extensão da UNAERP, no ar na Vercel.",
-      en: "University extension project for UNAERP, live on Vercel.",
+      pt: "Sistema para acompanhar a evolução dos atletas de natação da UNAERP.",
+      en: "A system to track the progress of the UNAERP swimming team.",
     },
     repo: gh("Natacao_Unaerp"),
     live: "https://natacao-unaerp.vercel.app",
@@ -33,9 +47,10 @@ export const projects: Project[] = [
     name: "Mobile Security",
     category: "security",
     tech: "Kotlin",
+    stack: ["Kotlin", "Android", "Gradle"],
     description: {
-      pt: "Segurança em aplicativos mobile com Kotlin.",
-      en: "Mobile application security with Kotlin.",
+      pt: "App Android de sobremesas com catálogo via API e regras de segurança de rede.",
+      en: "Android dessert app with an API catalog and network security rules.",
     },
     repo: gh("mobile-security"),
   },
@@ -44,31 +59,36 @@ export const projects: Project[] = [
     name: "Mini-curso API REST",
     category: "web",
     tech: "Java",
+    stack: ["Java", "REST API"],
     description: {
       pt: "API REST em Java construída durante um mini-curso.",
       en: "REST API in Java built during a short course.",
     },
     repo: gh("Mini-Curso-API-Rest"),
+    draft: true,
   },
   {
     slug: "cybersecurity-in-ai",
     name: "Cybersecurity in AI",
     category: "security",
     tech: "Research",
+    stack: [],
     description: {
       pt: "Cibersegurança aplicada a sistemas de IA.",
       en: "Cybersecurity applied to AI systems.",
     },
     repo: gh("cybersecurity-in-AI"),
+    draft: true,
   },
   {
     slug: "estagio",
     name: "Estágio",
     category: "study",
     tech: "Python",
+    stack: ["Python", "Node.js", "Playwright", "REST API"],
     description: {
-      pt: "Código em Python do período de estágio.",
-      en: "Python code from my internship.",
+      pt: "Versões didáticas de projetos feitos no meu estágio.",
+      en: "Teaching versions of projects from my internship.",
     },
     repo: gh("Estagio"),
   },
@@ -77,9 +97,10 @@ export const projects: Project[] = [
     name: "Spotify Clone",
     category: "web",
     tech: "HTML · CSS",
+    stack: ["HTML5", "CSS3", "Flexbox", "Grid"],
     description: {
-      pt: "Meu primeiro projeto: uma interface em HTML e CSS.",
-      en: "My first project: an interface in HTML and CSS.",
+      pt: "Meu primeiro projeto: a interface de um player de música em HTML e CSS.",
+      en: "My first project: a music player interface in HTML and CSS.",
     },
     repo: gh("Spotify-clone"),
   },
@@ -88,18 +109,14 @@ export const projects: Project[] = [
     name: "Estudos",
     category: "study",
     tech: "HTML",
+    stack: ["HTML", "CSS", "JavaScript", "Python", "React"],
     description: {
-      pt: "Meus estudos pessoais, registrados em código.",
-      en: "My personal studies, logged as code.",
+      pt: "Exercícios, anotações e projetos dos meus estudos.",
+      en: "Exercises, notes and projects from my studies.",
     },
     repo: gh("Estudos"),
   },
 ];
 
-export const stats = {
-  repositories: 12,
-  languages: 5,
-  since: 2025,
-};
-
-export const githubProfile = "https://github.com/HenriqueGodoyy";
+/** Projetos publicados no site. Tire o `draft` de um projeto para mostrá-lo. */
+export const projects = allProjects.filter((project) => !project.draft);
