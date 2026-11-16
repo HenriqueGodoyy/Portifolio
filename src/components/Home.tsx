@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { ContactLinks } from "@/components/ContactLinks";
+import { HomeExtras } from "@/components/HomeExtras";
 import { Ring } from "@/components/Ring";
+import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { stack } from "@/content/profile";
 import { projects, type Category } from "@/content/projects";
+import type { RepoActivity } from "@/lib/github";
 import { dict, useLocale } from "@/lib/i18n";
 
 const categories: Category[] = ["web", "security", "study"];
@@ -41,7 +44,7 @@ function PitchLink({
   );
 }
 
-export function Home() {
+export function Home({ activity }: { activity: RepoActivity[] }) {
   const locale = useLocale();
   const t = dict[locale];
 
@@ -95,7 +98,7 @@ export function Home() {
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
         {categories.map((c, ci) => (
           <section key={c} id={c} className="scroll-mt-8 border-t border-line pt-8 pb-14">
             <div className="mb-6 flex items-baseline gap-3">
@@ -150,6 +153,8 @@ export function Home() {
           </section>
         ))}
 
+        <HomeExtras activity={activity} />
+
         <section id="contact" className="scroll-mt-8 border-t border-line pt-8">
           <h2 className="font-display text-4xl sm:text-5xl">{t.contactTitle}</h2>
           <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-ink/75">{t.contactBody}</p>
@@ -162,6 +167,8 @@ export function Home() {
           </Link>
         </section>
       </div>
+
+      <SiteFooter />
     </>
   );
 }
