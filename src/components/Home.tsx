@@ -4,7 +4,8 @@ import Link from "next/link";
 import { ContactLinks } from "@/components/ContactLinks";
 import { Ring } from "@/components/Ring";
 import { SiteHeader } from "@/components/SiteHeader";
-import { projects, stats, type Category } from "@/content/projects";
+import { stack } from "@/content/profile";
+import { projects, type Category } from "@/content/projects";
 import { dict, useLocale } from "@/lib/i18n";
 
 const categories: Category[] = ["web", "security", "study"];
@@ -76,9 +77,9 @@ export function Home() {
           <dl className="flex shrink-0 gap-7 sm:gap-9">
             {(
               [
-                [stats.repositories, t.stats.repositories],
-                [stats.languages, t.stats.languages],
-                [stats.since, t.stats.since],
+                [projects.length, t.stats.projects],
+                [stack.length, t.stats.technologies],
+                [projects.filter((p) => p.live).length, t.stats.live],
               ] as const
             ).map(([value, label]) => (
               <div key={label} className="flex flex-col-reverse">

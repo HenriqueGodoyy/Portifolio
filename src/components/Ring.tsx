@@ -4,6 +4,7 @@ import {
   motion,
   useAnimationFrame,
   useMotionValue,
+  useMotionValueEvent,
   useReducedMotion,
   useTransform,
   type MotionValue,
@@ -13,26 +14,36 @@ import Link from "next/link";
 import { palette, projects, type Project } from "@/content/projects";
 import { dict, useLocale } from "@/lib/i18n";
 
-// O anel precisa de cards suficientes para fechar o círculo: repete a lista.
-const MIN_CARDS = 14;
-const items: Project[] = Array.from(
-  { length: Math.ceil(MIN_CARDS / projects.length) * projects.length },
-  (_, i) => projects[i % projects.length],
-);
-const STEP = 360 / items.length;
-const DEG_PER_SECOND = 4;
+// Cada projeto aparece uma vez só. Com poucos projetos os cards formam um arco
+// que balança de leve; a partir de 12 eles fecham o círculo e giram sem parar.
+const COUNT = projects.length;
+const STEP = Math.min(30, 360 / COUNT);
+const LOOP = COUNT * STEP >= 360;
+/** Até onde o arco pode ser arrastado: o último card chega ao centro. */
+const LIMIT = ((COUNT - 1) / 2) * STEP;
+/** Até onde o arco balança sozinho. */
+const SWAY = Math.min(LIMIT, STEP);
+const DEG_PER_SECOND = LOOP ? 4 : 2.5;
+
+function baseAngle(index: number) {
+  return LOOP ? index * STEP : (index - (COUNT - 1) / 2) * STEP;
+}
+
+function clamp(deg: number) {
+  return LOOP ? deg : Math.max(-LIMIT, Math.min(LIMIT, deg));
+}
 
 type Geometry = { radius: number; perspective: number; back: number; cardW: number; cardH: number };
 
 /**
- * A câmera fica atrás do centro do anel, olhando para os cards do lado de
+ * A câmera fica atrás do centro do círculo, olhando para os cards do lado de
  * dentro. `back` é escolhido para que o card no ângulo `view` caia exatamente
  * na borda da janela.
  */
 function geometry(w: number, h: number): Geometry {
   const radius = w * 0.58;
   const perspective = radius * 1.4;
-  const baseW = ((radius * 2 * Math.PI) / items.length) * 0.8;
+  const baseW = ((radius * STEP * Math.PI) / 180) * 0.8;
   const baseH = baseW * 1.5;
   let result: Geometry = { radius, perspective, back: 0, cardW: baseW, cardH: baseH };
   // Janelas altas e estreitas mostram menos cards, maiores: fecha o ângulo de
@@ -50,7 +61,7 @@ function geometry(w: number, h: number): Geometry {
       cardW = cardH / 1.5;
     }
     result = { radius, perspective, back, cardW, cardH };
-    if (cardH * centerScale >= h * 0.46) break;
+    if (cardH * centerScale >= h * 0.5) break;
   }
   return result;
 }
@@ -65,6 +76,7 @@ export function Ring() {
   const rotation = useMotionValue(0);
   const reduced = useReducedMotion();
   const paused = useRef(false);
+  const direction = useRef(1);
   const drag = useRef({ active: false, x: 0, moved: 0 });
   const locale = useLocale();
 
@@ -82,10 +94,16 @@ export function Ring() {
 
   useAnimationFrame((_, delta) => {
     if (reduced || paused.current || drag.current.active) return;
-    rotation.set(rotation.get() + (Math.min(delta, 64) / 1000) * DEG_PER_SECOND);
+    const current = rotation.get();
+    if (!LOOP) {
+      // no arco, volta em direção ao centro ao passar do limite do balanço
+      if (current >= SWAY) direction.current = -1;
+      if (current <= -SWAY) direction.current = 1;
+    }
+    rotation.set(current + direction.current * (Math.min(delta, 64) / 1000) * DEG_PER_SECOND);
   });
 
-  const turn = (deg: number) => rotation.set(rotation.get() + deg);
+  const turn = (deg: number) => rotation.set(clamp(rotation.get() + deg));
 
   return (
     <div
@@ -131,9 +149,9 @@ export function Ring() {
       }}
     >
       {size.w > 0 &&
-        items.map((project, i) => (
+        projects.map((project, i) => (
           <Card
-            key={i}
+            key={project.slug}
             project={project}
             index={i}
             rotation={rotation}
@@ -161,11 +179,12 @@ function Card({
   geo: Geometry;
   description: string;
 }) {
-  const base = index * STEP;
-  // Cards do lado da câmera ficam de costas e são escondidos.
+  const base = baseAngle(index);
+  // Cards do lado da câmera ficam de costas: somem da tela, do teclado e dos
+  // leitores de tela.
   const facing = useTransform(rotation, (r) => Math.abs(normalize(base + r)) < 100);
-  const opacity = useTransform(facing, (f) => (f ? 1 : 0));
-  const pointerEvents = useTransform(facing, (f) => (f ? "auto" : "none"));
+  const [visible, setVisible] = useState(() => facing.get());
+  useMotionValueEvent(facing, "change", setVisible);
   // Cada card carrega a transformação inteira (sem um contêiner 3D girando):
   // um contêiner posicionado atrás da câmera faz o Chrome descartar os filhos.
   const transform = useTransform(
@@ -173,19 +192,19 @@ function Card({
     (r) => `translateZ(var(--depth)) rotateY(${base + r}deg) translateZ(var(--radius))`,
   );
   const colors = palette[project.category];
-  const number = String((index % projects.length) + 1).padStart(2, "0");
 
   return (
     <motion.div
       className="absolute top-1/2 left-1/2"
+      aria-hidden={!visible}
       style={{
         width: geo.cardW,
         height: geo.cardH,
         marginLeft: -geo.cardW / 2,
         marginTop: -geo.cardH / 2,
         transform,
-        opacity,
-        pointerEvents,
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
         backfaceVisibility: "hidden",
         fontSize: geo.cardW / 16,
       }}
@@ -193,6 +212,7 @@ function Card({
       <Link
         href={`/projetos/${project.slug}`}
         draggable={false}
+        tabIndex={visible ? undefined : -1}
         className="flex h-full w-full flex-col justify-between overflow-hidden rounded-[1.4em] p-[1.3em] shadow-[0_1.5em_3em_rgb(0_0_0/0.35)] transition-[filter] hover:brightness-110"
         style={{
           color: colors.fg,
@@ -202,7 +222,7 @@ function Card({
         }}
       >
         <div className="flex items-start justify-between font-mono text-[0.8em] tracking-[0.12em] uppercase">
-          <span>{number}</span>
+          <span>{String(index + 1).padStart(2, "0")}</span>
           <span className="rounded-full px-[0.8em] py-[0.3em]" style={{ background: colors.chip }}>
             {project.tech}
           </span>

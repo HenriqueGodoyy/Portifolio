@@ -48,7 +48,7 @@ export const dict = {
       contact: "fale comigo",
       e: ".",
     },
-    stats: { repositories: "Repositórios", languages: "Linguagens", since: "No GitHub desde" },
+    stats: { projects: "Projetos", technologies: "Tecnologias", live: "No ar" },
     hint: "Arraste para girar",
     sections: {
       web: "Aplicações web",
@@ -80,7 +80,7 @@ export const dict = {
       contact: "say hi",
       e: ".",
     },
-    stats: { repositories: "Repositories", languages: "Languages", since: "On GitHub since" },
+    stats: { projects: "Projects", technologies: "Technologies", live: "Live" },
     hint: "Drag to spin",
     sections: {
       web: "Web apps",

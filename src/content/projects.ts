@@ -11,6 +11,8 @@ export type Project = {
   description: { pt: string; en: string };
   repo: string;
   live?: string;
+  /** Rascunho: fica fora do site até ter conteúdo. */
+  draft?: boolean;
   /** Caminho de um screenshot em /public (ex.: "/projects/natacao.png"). Opcional. */
   image?: string;
 };
@@ -25,7 +27,8 @@ export const palette: Record<Category, { bg: string; fg: string; chip: string }>
 
 // Para postar um projeto novo: adicione um item nesta lista e crie os arquivos
 // src/content/projects/<slug>.pt.mdx e <slug>.en.mdx com o texto da página.
-export const projects: Project[] = [
+// Projetos com `draft: true` ficam guardados aqui, mas não aparecem no site.
+const allProjects: Project[] = [
   {
     slug: "natacao-unaerp",
     name: "Natação UNAERP",
@@ -62,6 +65,7 @@ export const projects: Project[] = [
       en: "REST API in Java built during a short course.",
     },
     repo: gh("Mini-Curso-API-Rest"),
+    draft: true,
   },
   {
     slug: "cybersecurity-in-ai",
@@ -74,6 +78,7 @@ export const projects: Project[] = [
       en: "Cybersecurity applied to AI systems.",
     },
     repo: gh("cybersecurity-in-AI"),
+    draft: true,
   },
   {
     slug: "estagio",
@@ -113,8 +118,5 @@ export const projects: Project[] = [
   },
 ];
 
-export const stats = {
-  repositories: 12,
-  languages: 5,
-  since: 2025,
-};
+/** Projetos publicados no site. Tire o `draft` de um projeto para mostrá-lo. */
+export const projects = allProjects.filter((project) => !project.draft);
